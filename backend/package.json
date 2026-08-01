@@ -7,7 +7,7 @@
   "dependencies": {
     "bcryptjs": "...",
     "cors": "...",
-    "dotenv": "...",
+    "dotenv": "file:...",
     "express": "file:...",
     "jsonwebtoken": "...",
     "mongoose": "...",
