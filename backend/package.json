@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js"
+  },
+  "dependencies": {
+    "multer": "^2.2.0"
+  }
+}
