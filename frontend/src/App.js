@@ -26,7 +26,7 @@ function App() {
         <Route path="/workout" element={<ProtectedRoute><Workout /></ProtectedRoute>} />
         <Route path="/nutrition" element={<ProtectedRoute><Nutrition /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/Navbar" element={<Navbar />}/>
+        <Route path="/Navbar" element={<Navbar />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/bmi" element={<ProtectedRoute><BMICalculator /></ProtectedRoute>} />
         <Route path="/water" element={<ProtectedRoute><WaterTracker /></ProtectedRoute>} />
