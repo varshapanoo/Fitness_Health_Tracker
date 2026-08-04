@@ -1,32 +1,3 @@
-// import React, { useState } from "react";
-// import { Navigate } from "react-router-dom";
-
-// const Register = () => {
-
-//     // ADD THIS
-//     const token = localStorage.getItem("token");
-
-//     if (token) {
-//         return <Navigate to="/dashboard" replace />;
-//     }
-
-//     // Your existing state variables
-//     const [name, setName] = useState("");
-//     const [email, setEmail] = useState("");
-//     const [password, setPassword] = useState("");
-
-//     // Your existing functions
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
-
-//         // Existing registration code
-//     };
-
-//     return
-// };
-
-// export default Register;
-    // Remaining code...
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../services/api";

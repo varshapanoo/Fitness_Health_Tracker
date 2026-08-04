@@ -1,16 +1,8 @@
 import { useState } from "react";
-import { useNavigate, Link, Navigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import API from "../services/api";
 
 function Login() {
-
-  // Check if user is already logged in
-  const token = localStorage.getItem("token");
-
-  if (token) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
   const navigate = useNavigate();
 
   const [user, setUser] = useState({
