@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import MainLayout from "../layouts/MainLayout";
+import { toast } from "react-toastify";
 //import { useState } from "react";
 
 function Profile() {
@@ -41,15 +43,16 @@ function Profile() {
       },
     });
 
-    alert("Profile image uploaded successfully");
+    toast.success("Profile image uploaded successfully");
     setPreview("http://localhost:5000" + res.data.profileImage);
 
   } catch (error) {
-    alert(error.response?.data?.message || "Upload failed");
+    toast.error(error.response?.data?.message || "Upload failed");
   }
 };
 
   return (
+    <MainLayout>
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
@@ -113,6 +116,7 @@ function Profile() {
         </div>
       </div>
     </div>
+    </MainLayout>
   );
 }
 

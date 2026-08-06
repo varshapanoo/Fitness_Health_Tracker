@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import MainLayout from "../layouts/MainLayout";
+import { toast } from "react-toastify";
 
 function WaterTracker() {
   const [goal, setGoal] = useState(3000);
@@ -40,10 +42,10 @@ function WaterTracker() {
         }
       );
 
-      alert("Goal Updated Successfully");
+      toast.success("Goal Updated Successfully");
       fetchWaterData();
     } catch (error) {
-      alert(error.response?.data?.message || "Error");
+      toast.error(error.response?.data?.message || "Error");
     }
   };
 
@@ -63,7 +65,7 @@ function WaterTracker() {
 
       fetchWaterData();
     } catch (error) {
-      alert(error.response?.data?.message || "Error");
+      toast.error(error.response?.data?.message || "Error");
     }
   };
 
@@ -83,13 +85,14 @@ function WaterTracker() {
 
       fetchWaterData();
     } catch (error) {
-      alert(error.response?.data?.message || "Error");
+      toast.error(error.response?.data?.message || "Error");
     }
   };
 
   const percentage = Math.min((consumed / goal) * 100, 100);
 
   return (
+    <MainLayout>
     <div className="container mt-4">
       <div className="row justify-content-center">
         <div className="col-lg-6">
@@ -152,6 +155,7 @@ function WaterTracker() {
         </div>
       </div>
     </div>
+    </MainLayout>
   );
 }
 

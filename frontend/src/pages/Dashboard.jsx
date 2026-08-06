@@ -6,6 +6,7 @@ import PieChartComponent from "../components/PieChartComponent";
 import LineChartComponent from "../components/LineChartComponent";
 import DashboardCards from "../components/DashboardCards";
 import generatePDF from "../utils/generatePDF";
+import MainLayout from "../layouts/MainLayout";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -63,6 +64,7 @@ function Dashboard() {
   };
 
   return (
+    <MainLayout>
     <div className="container mt-4">
 
       <h2 className="text-center mb-4">
@@ -175,6 +177,7 @@ function Dashboard() {
       </div>
 
     </div>
+    </MainLayout>
   );
 }
 

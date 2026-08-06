@@ -1,4 +1,6 @@
 import { useState } from "react";
+import MainLayout from "../layouts/MainLayout";
+import { toast } from "react-toastify";
 
 function BMICalculator() {
   const [height, setHeight] = useState("");
@@ -8,7 +10,7 @@ function BMICalculator() {
 
   const calculateBMI = () => {
     if (!height || !weight) {
-      alert("Please enter height and weight");
+      toast.success("Please enter height and weight");
       return;
     }
 
@@ -32,6 +34,7 @@ function BMICalculator() {
   };
 
   return (
+    <MainLayout>
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
@@ -73,7 +76,7 @@ function BMICalculator() {
               </button>
 
               {bmi && (
-                <div className="alert alert-success mt-4 text-center">
+                <div className="toast toast-success mt-4 text-center">
                   <h4>Your BMI: {bmi}</h4>
                   <h5>{status}</h5>
                 </div>
@@ -85,6 +88,7 @@ function BMICalculator() {
         </div>
       </div>
     </div>
+    </MainLayout>
   );
 }
 

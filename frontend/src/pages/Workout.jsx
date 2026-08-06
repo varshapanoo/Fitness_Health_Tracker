@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import API from "../services/api";
+import MainLayout from "../layouts/MainLayout";
+import { toast } from "react-toastify";
 
 function Workout() {
   const [workout, setWorkout] = useState({
@@ -55,7 +57,7 @@ function Workout() {
           },
         });
 
-        alert("Workout Updated Successfully");
+        toast.success("Workout Updated Successfully");
 
         setIsEditing(false);
         setEditId(null);
@@ -66,7 +68,7 @@ function Workout() {
           },
         });
 
-        alert("Workout Added Successfully");
+        toast.success("Workout Added Successfully");
       }
 
       setWorkout({
@@ -78,7 +80,7 @@ function Workout() {
 
       fetchWorkouts();
     } catch (error) {
-      alert(error.response?.data?.message || "Error");
+      toast.error(error.response?.data?.message || "Error");
     }
   };
 
@@ -104,15 +106,16 @@ function Workout() {
         },
       });
 
-      alert("Workout Deleted Successfully");
+      toast.success("Workout Deleted Successfully");
 
       fetchWorkouts();
     } catch (error) {
-      alert(error.response?.data?.message || "Error deleting workout");
+      toast.error(error.response?.data?.message || "Error deleting workout");
     }
   };
 
   return (
+    <MainLayout>
   <div className="container mt-4">
     <div className="row justify-content-center">
       <div className="col-12 col-lg-8">
@@ -203,7 +206,7 @@ function Workout() {
         <h2 className="text-center mb-4">Workout History</h2>
 
         {workouts.length === 0 ? (
-          <div className="alert alert-info text-center">
+          <div className="toast toast-info text-center">
             No workouts found.
           </div>
         ) : (
@@ -261,6 +264,7 @@ function Workout() {
       </div>
     </div>
   </div>
+  </MainLayout>
 );
 }
 

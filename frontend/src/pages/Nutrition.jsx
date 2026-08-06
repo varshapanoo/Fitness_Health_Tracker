@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import API from "../services/api";
+import MainLayout from "../layouts/MainLayout";
+import { toast } from "react-toastify";
 
 function Nutrition() {
   const [meal, setMeal] = useState({
@@ -57,7 +59,7 @@ function Nutrition() {
           },
         });
 
-        alert("Meal Updated Successfully");
+        toast.success("Meal Updated Successfully");
         setIsEditing(false);
         setEditId(null);
       } else {
@@ -67,7 +69,7 @@ function Nutrition() {
           },
         });
 
-        alert("Meal Added Successfully");
+        toast.success("Meal Added Successfully");
       }
 
       setMeal({
@@ -82,7 +84,7 @@ function Nutrition() {
       fetchMeals();
 
     } catch (error) {
-      alert(error.response?.data?.message || "Error");
+      toast.error(error.response?.data?.message || "Error");
     }
   };
 
@@ -110,16 +112,17 @@ function Nutrition() {
         },
       });
 
-      alert("Meal Deleted Successfully");
+      toast.success("Meal Deleted Successfully");
 
       fetchMeals();
 
     } catch (error) {
-      alert(error.response?.data?.message || "Error deleting meal");
+      toast.error(error.response?.data?.message || "Error deleting meal");
     }
   };
 
   return (
+    <MainLayout>
   <div className="container mt-4">
     <div className="row justify-content-center">
       <div className="col-12 col-lg-8">
@@ -246,7 +249,7 @@ function Nutrition() {
         </h2>
 
         {meals.length === 0 ? (
-          <div className="alert alert-info text-center">
+          <div className="toast toast-info text-center">
             No meals found.
           </div>
         ) : (
@@ -302,6 +305,7 @@ function Nutrition() {
       </div>
     </div>
   </div>
+  </MainLayout>
 );
 }
 

@@ -9,11 +9,12 @@ import Nutrition from "./pages/Nutrition";
 import Profile from "./pages/Profile";
 /*import Navbar from "./components/Navbar";*/
 import ProtectedRoute from "./components/ProtectedRoute";
-import Footer from "./components/Footer";
+/*import Footer from "./components/Footer";*/
 import NotFound from "./pages/NotFound";
 import BMICalculator from "./pages/BMICalculator";
 import WaterTracker from "./pages/WaterTracker";
 import Goals from "./pages/Goals";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -31,7 +32,16 @@ function App() {
         <Route path="/water" element={<ProtectedRoute><WaterTracker /></ProtectedRoute>} />
         <Route path="/goals" element={<ProtectedRoute><Goals /></ProtectedRoute>} />
       </Routes>
-      <Footer />
+
+       <ToastContainer
+    position="top-right"
+    autoClose={3000}
+    hideProgressBar={false}
+    newestOnTop
+    closeOnClick
+    pauseOnHover
+    theme="colored"
+  />
     </BrowserRouter>
   );
 }

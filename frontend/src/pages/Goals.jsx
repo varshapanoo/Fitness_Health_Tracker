@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import MainLayout from "../layouts/MainLayout";
+import { toast } from "react-toastify";
 
 function Goals() {
   const [goal, setGoal] = useState({
@@ -54,7 +56,7 @@ function Goals() {
           },
         });
 
-        alert("Goal Updated Successfully");
+        toast.success("Goal Updated Successfully");
         setIsEditing(false);
         setEditId(null);
       } else {
@@ -64,7 +66,7 @@ function Goals() {
           },
         });
 
-        alert("Goal Added Successfully");
+        toast.success("Goal Added Successfully");
       }
 
       setGoal({
@@ -78,7 +80,7 @@ function Goals() {
       fetchGoals();
 
     } catch (error) {
-      alert(error.response?.data?.message || "Error");
+      toast.error(error.response?.data?.message || "Error");
     }
   };
 
@@ -105,15 +107,16 @@ function Goals() {
         },
       });
 
-      alert("Goal Deleted Successfully");
+      toast.success("Goal Deleted Successfully");
       fetchGoals();
 
     } catch (error) {
-      alert(error.response?.data?.message || "Error");
+      toast.error(error.response?.data?.message || "Error");
     }
   };
 
   return (
+    <MainLayout>
     <div className="container mt-4">
 
       <div className="card shadow mb-4">
@@ -236,6 +239,7 @@ function Goals() {
       )}
 
     </div>
+    </MainLayout>
   );
 }
 
