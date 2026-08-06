@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import {
   FaDumbbell,
   FaUtensils,
@@ -10,6 +10,7 @@ import {
 import API from "../services/api";
 import { useAuth } from "../context/AuthContext";
 
+import QuickActions from "../components/QuickActions";
 import MainLayout from "../layouts/MainLayout";
 import DashboardHeader from "../components/DashboardHeader";
 import DashboardCards from "../components/DashboardCards";
@@ -20,7 +21,7 @@ import LineChartComponent from "../components/LineChartComponent";
 import generatePDF from "../utils/generatePDF";
 
 function Dashboard() {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const { token } = useAuth();
 
   const [totalWorkouts, setTotalWorkouts] = useState(0);
@@ -30,7 +31,7 @@ function Dashboard() {
 
   useEffect(() => {
     fetchDashboardData();
-  }, );
+  }, [token]);
 
   const fetchDashboardData = async () => {
     try {
@@ -155,30 +156,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="d-flex flex-wrap justify-content-center gap-3 mt-4 mb-4">
-
-        <button
-          className="btn btn-primary"
-          onClick={() => navigate("/workout")}
-        >
-          Workout
-        </button>
-
-        <button
-          className="btn btn-success"
-          onClick={() => navigate("/nutrition")}
-        >
-          Nutrition
-        </button>
-
-        <button
-          className="btn btn-info"
-          onClick={() => navigate("/profile")}
-        >
-          Profile
-        </button>
-
-      </div>
+      <QuickActions />
 
     </MainLayout>
   );
