@@ -1,15 +1,27 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  FaDumbbell,
+  FaUtensils,
+  FaFire,
+  FaAppleAlt,
+} from "react-icons/fa";
+
 import API from "../services/api";
+import { useAuth } from "../context/AuthContext";
+
+import MainLayout from "../layouts/MainLayout";
+import DashboardHeader from "../components/DashboardHeader";
+import DashboardCards from "../components/DashboardCards";
 import DashboardChart from "../components/DashboardChart";
 import PieChartComponent from "../components/PieChartComponent";
 import LineChartComponent from "../components/LineChartComponent";
-import DashboardCards from "../components/DashboardCards";
+
 import generatePDF from "../utils/generatePDF";
-import MainLayout from "../layouts/MainLayout";
 
 function Dashboard() {
   const navigate = useNavigate();
+  const { token } = useAuth();
 
   const [totalWorkouts, setTotalWorkouts] = useState(0);
   const [totalMeals, setTotalMeals] = useState(0);
@@ -18,12 +30,10 @@ function Dashboard() {
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, );
 
   const fetchDashboardData = async () => {
     try {
-      const token = localStorage.getItem("token");
-
       const workoutRes = await API.get("/workouts", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -65,55 +75,49 @@ function Dashboard() {
 
   return (
     <MainLayout>
-    <div className="container mt-4">
 
-      <h2 className="text-center mb-4">
-        Fitness Tracker Dashboard
-      </h2>
+      <DashboardHeader
+        onDownload={() =>
+          generatePDF({
+            totalWorkouts,
+            totalMeals,
+            caloriesBurned,
+            caloriesConsumed,
+          })
+        }
+      />
 
       <div className="row">
 
         <DashboardCards
           title="Total Workouts"
           value={totalWorkouts}
+          icon={<FaDumbbell />}
           color="linear-gradient(135deg,#0d6efd,#4f9bff)"
         />
 
         <DashboardCards
           title="Total Meals"
           value={totalMeals}
+          icon={<FaUtensils />}
           color="linear-gradient(135deg,#198754,#34d399)"
         />
 
         <DashboardCards
           title="Calories Burned"
           value={caloriesBurned}
+          icon={<FaFire />}
           color="linear-gradient(135deg,#fd7e14,#f59e0b)"
         />
 
         <DashboardCards
           title="Calories Consumed"
           value={caloriesConsumed}
+          icon={<FaAppleAlt />}
           color="linear-gradient(135deg,#dc3545,#ff6b81)"
         />
 
       </div>
-
-      <div className="text-center mt-4 mb-4">
-  <button
-    className="btn btn-danger"
-    onClick={() =>
-      generatePDF({
-        totalWorkouts,
-        totalMeals,
-        caloriesBurned,
-        caloriesConsumed,
-      })
-    }
-  >
-    📄 Download Fitness Report
-  </button>
-</div>
 
       <div className="card shadow mb-4">
         <div className="card-body">
@@ -151,7 +155,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="d-flex flex-wrap justify-content-center gap-3 mt-4">
+      <div className="d-flex flex-wrap justify-content-center gap-3 mt-4 mb-4">
 
         <button
           className="btn btn-primary"
@@ -176,7 +180,6 @@ function Dashboard() {
 
       </div>
 
-    </div>
     </MainLayout>
   );
 }
