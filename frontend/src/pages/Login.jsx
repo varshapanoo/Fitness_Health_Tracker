@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../services/api";
-import MainLayout from "../layouts/MainLayout";
 import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const navigate = useNavigate();
-
+  const { login } = useAuth(); 
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -25,8 +25,7 @@ function Login() {
     try {
       const res = await API.post("/users/login", user);
 
-      localStorage.setItem("token", res.data.token);
-
+      login(res.data.token);
       toast.success("Login Successful");
 
       navigate("/dashboard");
@@ -36,7 +35,6 @@ function Login() {
   };
 
   return (
-    <MainLayout>
     <div className="container mt-5">
       <div className="row justify-content-center">
 
@@ -102,7 +100,6 @@ function Login() {
 
       </div>
     </div>
-    </MainLayout>
   );
 }
 
