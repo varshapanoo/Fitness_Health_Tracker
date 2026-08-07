@@ -30,9 +30,7 @@ function Dashboard() {
   const [caloriesConsumed, setCaloriesConsumed] = useState(0);
 
   useEffect(() => {
-    fetchDashboardData();
-  }, [token]);
-
+  
   const fetchDashboardData = async () => {
     try {
       const workoutRes = await API.get("/workouts", {
@@ -73,6 +71,10 @@ function Dashboard() {
       console.log(error);
     }
   };
+  if (token) {
+    fetchDashboardData();
+  }
+}, [token]);
 
   return (
     <MainLayout>

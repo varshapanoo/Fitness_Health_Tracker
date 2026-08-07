@@ -99,6 +99,13 @@ function Workout() {
   };
 
   const deleteWorkout = async (id) => {
+    const confirmed = window.confirm(
+    "Are you sure you want to delete this workout?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
     try {
       const token = localStorage.getItem("token");
 
