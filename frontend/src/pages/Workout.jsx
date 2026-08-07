@@ -16,6 +16,8 @@ function Workout() {
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   const [date, setDate] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
 
   useEffect(() => {
     fetchWorkouts();
@@ -114,6 +116,44 @@ function Workout() {
     }
   };
 
+  const filteredWorkouts = workouts
+  .filter((item) =>
+    item.exerciseName
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  )
+  .filter((item) => {
+    if (!date) return true;
+
+    return (
+      new Date(item.date).toISOString().slice(0, 10) === date
+    );
+  })
+  .filter((item) => {
+    if (!selectedCategory) return true;
+
+    return item.category === selectedCategory;
+  })
+  .sort((a, b) => {
+    if (sortBy === "newest") {
+      return new Date(b.date) - new Date(a.date);
+    }
+
+    if (sortBy === "oldest") {
+      return new Date(a.date) - new Date(b.date);
+    }
+
+    if (sortBy === "caloriesHigh") {
+      return b.caloriesBurned - a.caloriesBurned;
+    }
+
+    if (sortBy === "caloriesLow") {
+      return a.caloriesBurned - b.caloriesBurned;
+    }
+
+    return 0;
+  });
+
   return (
     <MainLayout>
   <div className="container mt-4">
@@ -140,16 +180,34 @@ function Workout() {
               </div>
 
               <div className="mb-3">
-                <label className="form-label">Category</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="category"
-                  value={workout.category}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+  <label className="form-label">Category</label>
+
+  <select
+    className="form-select"
+    name="category"
+    value={workout.category}
+    onChange={handleChange}
+    required
+  >
+    <option value="">Select Category</option>
+
+    <option value="Cardio">Cardio</option>
+
+    <option value="Strength">Strength</option>
+
+    <option value="Yoga">Yoga</option>
+
+    <option value="HIIT">HIIT</option>
+
+    <option value="Cycling">Cycling</option>
+
+    <option value="Walking">Walking</option>
+
+    <option value="Stretching">Stretching</option>
+
+    <option value="Other">Other</option>
+  </select>
+</div>
 
               <div className="mb-3">
                 <label className="form-label">Duration (Minutes)</label>
@@ -183,85 +241,148 @@ function Workout() {
         </div>
 
         <div className="row mb-4">
-          <div className="col-12 col-md-6 mb-2">
-            <input
-              type="date"
-              className="form-control"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </div>
 
-          <div className="col-12 col-md-6 mb-2">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search Workout..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-        </div>
+  {/* Date Filter */}
+  <div className="col-12 col-md-4 mb-2">
+    <input
+      type="date"
+      className="form-control"
+      value={date}
+      onChange={(e) => setDate(e.target.value)}
+    />
+  </div>
+
+  {/* Search Filter */}
+  <div className="col-12 col-md-4 mb-2">
+    <input
+      type="text"
+      className="form-control"
+      placeholder="Search Workout..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+  </div>
+
+  {/* Category Filter */}
+  <div className="col-12 col-md-4 mb-2">
+    <select
+      className="form-select"
+      value={selectedCategory}
+      onChange={(e) => setSelectedCategory(e.target.value)}
+    >
+      <option value="">All Categories</option>
+      <option value="Cardio">Cardio</option>
+      <option value="Strength">Strength</option>
+      <option value="Yoga">Yoga</option>
+      <option value="HIIT">HIIT</option>
+      <option value="Cycling">Cycling</option>
+      <option value="Walking">Walking</option>
+      <option value="Stretching">Stretching</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+  {/* Sort Filter */}
+  <div className="col-12 col-md-6 col-lg-3 mb-2">
+    <select
+      className="form-select"
+      value={sortBy}
+      onChange={(e) => setSortBy(e.target.value)}
+    >
+      <option value="newest">Newest First</option>
+      <option value="oldest">Oldest First</option>
+      <option value="caloriesHigh">Highest Calories</option>
+      <option value="caloriesLow">Lowest Calories</option>
+    </select>
+  </div>
+
+</div>
 
         <h2 className="text-center mb-4">Workout History</h2>
 
         {workouts.length === 0 ? (
-          <div className="toast toast-info text-center">
-            No workouts found.
-          </div>
-        ) : (
-          workouts
-            .filter((item) =>
-              item.exerciseName
-                .toLowerCase()
-                .includes(search.toLowerCase())
-            )
-            .filter((item) => {
-              if (!date) return true;
-              return (
-                new Date(item.date).toISOString().slice(0, 10) === date
-              );
-            })
-            .map((item) => (
-              <div className="card shadow mb-3" key={item._id}>
-                <div className="card-body">
+  <div className="card shadow-sm border-0 text-center py-5">
+    <div className="card-body">
+      <div className="display-4 mb-3">🏋️</div>
 
-                  <h4 className="mb-3">{item.exerciseName}</h4>
+      <h4>No Workouts Yet</h4>
 
-                  <p>
-                    <strong>Category:</strong> {item.category}
-                  </p>
+      <p className="text-muted mb-0">
+        Start your fitness journey by adding your first workout.
+      </p>
+    </div>
+  </div>
+) : filteredWorkouts.length === 0 ? (
+  <div className="card shadow-sm border-0 text-center py-5">
+    <div className="card-body">
+      <div className="display-4 mb-3">🔍</div>
 
-                  <p>
-                    <strong>Duration:</strong> {item.duration} Minutes
-                  </p>
+      <h4>No Matching Workouts</h4>
 
-                  <p>
-                    <strong>Calories Burned:</strong> {item.caloriesBurned}
-                  </p>
+      <p className="text-muted">
+        No workouts match your current search or filters.
+      </p>
 
-                  <div className="d-flex flex-column flex-sm-row gap-2 mt-3">
-                    <button
-                      className="btn btn-warning flex-fill"
-                      onClick={() => editWorkout(item)}
-                    >
-                      Edit
-                    </button>
+      <button
+        className="btn btn-outline-primary"
+        onClick={() => {
+          setSearch("");
+          setDate("");
+          setSelectedCategory("");
+          setSortBy("newest");
+        }}
+      >
+        Clear Filters
+      </button>
+    </div>
+  </div>
+) : (
+  filteredWorkouts.map((item) => (
+    <div className="card shadow mb-3" key={item._id}>
+      <div className="card-body">
 
-                    <button
-                      className="btn btn-danger flex-fill"
-                      onClick={() => deleteWorkout(item._id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
+        <h4 className="mb-3">
+          {item.exerciseName}
+        </h4>
 
-                </div>
-              </div>
-            ))
-        )}
+        <p>
+          <strong>Category:</strong>{" "}
+          {item.category}
+        </p>
+
+        <p>
+          <strong>Duration:</strong>{" "}
+          {item.duration} Minutes
+        </p>
+
+        <p>
+          <strong>Calories Burned:</strong>{" "}
+          {item.caloriesBurned}
+        </p>
+
+        <div className="d-flex flex-column flex-sm-row gap-2 mt-3">
+
+          <button
+            className="btn btn-warning flex-fill"
+            onClick={() => editWorkout(item)}
+          >
+            Edit
+          </button>
+
+          <button
+            className="btn btn-danger flex-fill"
+            onClick={() => deleteWorkout(item._id)}
+          >
+            Delete
+          </button>
+
+        </div>
 
       </div>
+    </div>
+  ))
+)}
+
+      </div> 
     </div>
   </div>
   </MainLayout>

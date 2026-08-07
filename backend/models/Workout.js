@@ -7,22 +7,41 @@ const workoutSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
     exerciseName: {
       type: String,
-      required: true,
+      required: [true, "Exercise name is required"],
+      trim: true,
     },
+
     category: {
       type: String,
-      required: true,
+      required: [true, "Workout category is required"],
+      enum: [
+        "Cardio",
+        "Strength",
+        "Yoga",
+        "HIIT",
+        "Cycling",
+        "Walking",
+        "Stretching",
+        "Other",
+      ],
+      default: "Other",
     },
+
     duration: {
       type: Number,
-      required: true,
+      required: [true, "Duration is required"],
+      min: [1, "Duration must be at least 1 minute"],
     },
+
     caloriesBurned: {
       type: Number,
-      required: true,
+      required: [true, "Calories burned is required"],
+      min: [0, "Calories burned cannot be negative"],
     },
+
     date: {
       type: Date,
       default: Date.now,
