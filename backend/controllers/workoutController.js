@@ -3,7 +3,13 @@ const Workout = require("../models/Workout");
 // Add Workout
 const addWorkout = async (req, res) => {
   try {
-    const { exerciseName, category, duration, caloriesBurned, date } = req.body;
+    const {
+      exerciseName,
+      category,
+      duration,
+      caloriesBurned,
+      date,
+    } = req.body;
 
     const workout = await Workout.create({
       user: req.user._id,
@@ -30,7 +36,9 @@ const addWorkout = async (req, res) => {
 // Get All Workouts
 const getWorkouts = async (req, res) => {
   try {
-    const workouts = await Workout.find({ user: req.user._id });
+    const workouts = await Workout.find({
+      user: req.user._id,
+    });
 
     res.status(200).json({
       success: true,
@@ -52,26 +60,32 @@ const updateWorkout = async (req, res) => {
 
     if (!workout) {
       return res.status(404).json({
+        success: false,
         message: "Workout not found",
       });
     }
 
+    // Check ownership
     if (workout.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({
-        message: "Not authorized",
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to update this workout",
       });
     }
 
     const updatedWorkout = await Workout.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+      {
+        new: true,
+        runValidators: true,
+      }
     );
 
     res.status(200).json({
       success: true,
       message: "Workout updated successfully",
-      updatedWorkout,
+      workout: updatedWorkout,
     });
   } catch (error) {
     res.status(500).json({
@@ -88,13 +102,16 @@ const deleteWorkout = async (req, res) => {
 
     if (!workout) {
       return res.status(404).json({
+        success: false,
         message: "Workout not found",
       });
     }
 
+    // Check ownership
     if (workout.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({
-        message: "Not authorized",
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to delete this workout",
       });
     }
 

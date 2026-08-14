@@ -1,4 +1,10 @@
 import { useState, useEffect } from "react";
+import {
+  FaDumbbell,
+  FaClock,
+  FaFire,
+  FaCalendarAlt,
+} from "react-icons/fa";
 import API from "../services/api";
 import MainLayout from "../layouts/MainLayout";
 import { toast } from "react-toastify";
@@ -304,7 +310,15 @@ function Workout() {
 
 </div>
 
-        <h2 className="text-center mb-4">Workout History</h2>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+  <h2 className="mb-0">
+    Workout History
+  </h2>
+
+  <span className="badge bg-secondary">
+    {filteredWorkouts.length} workouts
+  </span>
+</div>
 
         {workouts.length === 0 ? (
   <div className="card shadow-sm border-0 text-center py-5">
@@ -343,50 +357,108 @@ function Workout() {
     </div>
   </div>
 ) : (
-  filteredWorkouts.map((item) => (
-    <div className="card shadow mb-3" key={item._id}>
-      <div className="card-body">
+  <div className="row">
+  {filteredWorkouts.map((item) => (
+    <div className="col-12 col-md-6 mb-4" key={item._id}>
+  <div className="card shadow-sm border-0 h-100">
 
-        <h4 className="mb-3">
-          {item.exerciseName}
-        </h4>
+    <div className="card-body">
 
-        <p>
-          <strong>Category:</strong>{" "}
-          {item.category}
-        </p>
+      {/* Workout Header */}
+      <div className="d-flex justify-content-between align-items-start mb-3">
 
-        <p>
-          <strong>Duration:</strong>{" "}
-          {item.duration} Minutes
-        </p>
+        <div className="d-flex align-items-center">
 
-        <p>
-          <strong>Calories Burned:</strong>{" "}
-          {item.caloriesBurned}
-        </p>
+          <div className="fs-2 me-3">
+            <FaDumbbell />
+          </div>
 
-        <div className="d-flex flex-column flex-sm-row gap-2 mt-3">
+          <div>
+            <h4 className="mb-1">
+              {item.exerciseName}
+            </h4>
 
-          <button
-            className="btn btn-warning flex-fill"
-            onClick={() => editWorkout(item)}
-          >
-            Edit
-          </button>
-
-          <button
-            className="btn btn-danger flex-fill"
-            onClick={() => deleteWorkout(item._id)}
-          >
-            Delete
-          </button>
+            <span className="badge bg-primary">
+              {item.category}
+            </span>
+          </div>
 
         </div>
 
       </div>
+
+      {/* Workout Information */}
+      <div className="row text-center mb-3">
+
+        <div className="col-4">
+
+          <FaClock className="mb-2" />
+
+          <p className="mb-0 text-muted small">
+            Duration
+          </p>
+
+          <strong>
+            {item.duration} min
+          </strong>
+
+        </div>
+
+        <div className="col-4">
+
+          <FaFire className="mb-2" />
+
+          <p className="mb-0 text-muted small">
+            Calories
+          </p>
+
+          <strong>
+            {item.caloriesBurned} kcal
+          </strong>
+
+        </div>
+
+        <div className="col-4">
+
+          <FaCalendarAlt className="mb-2" />
+
+          <p className="mb-0 text-muted small">
+            Date
+          </p>
+
+          <strong>
+            {new Date(item.date).toLocaleDateString()}
+          </strong>
+
+        </div>
+
+      </div>
+
+      {/* Action Buttons */}
+      <div className="d-flex gap-2 mt-3">
+
+        <button
+          className="btn btn-warning flex-fill"
+          onClick={() => editWorkout(item)}
+        >
+          Edit
+        </button>
+
+        <button
+          className="btn btn-danger flex-fill"
+          onClick={() => deleteWorkout(item._id)}
+        >
+          Delete
+        </button>
+
+      </div>
+
     </div>
-  ))
+
+  </div>
+</div>
+  ))}
+  </div>
 )}
 
       </div> 
