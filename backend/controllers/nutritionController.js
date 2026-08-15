@@ -40,7 +40,9 @@ const addMeal = async (req, res) => {
 // Get All Meals
 const getMeals = async (req, res) => {
   try {
-    const meals = await Nutrition.find({ user: req.user._id });
+    const meals = await Nutrition.find({
+      user: req.user._id,
+    });
 
     res.status(200).json({
       success: true,
@@ -62,26 +64,32 @@ const updateMeal = async (req, res) => {
 
     if (!meal) {
       return res.status(404).json({
+        success: false,
         message: "Meal not found",
       });
     }
 
+    // Check ownership
     if (meal.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({
-        message: "Not authorized",
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to update this meal",
       });
     }
 
     const updatedMeal = await Nutrition.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+      {
+        new: true,
+        runValidators: true,
+      }
     );
 
     res.status(200).json({
       success: true,
       message: "Meal updated successfully",
-      updatedMeal,
+      meal: updatedMeal,
     });
   } catch (error) {
     res.status(500).json({
@@ -98,13 +106,16 @@ const deleteMeal = async (req, res) => {
 
     if (!meal) {
       return res.status(404).json({
+        success: false,
         message: "Meal not found",
       });
     }
 
+    // Check ownership
     if (meal.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({
-        message: "Not authorized",
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to delete this meal",
       });
     }
 

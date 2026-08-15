@@ -248,58 +248,90 @@ function Nutrition() {
           Meal History
         </h2>
 
-        {meals.length === 0 ? (
-          <div className="toast toast-info text-center">
-            No meals found.
+                {meals.length === 0 ? (
+          <div className="card shadow-sm border-0 text-center py-5">
+            <div className="card-body">
+              <h4>No Meals Found</h4>
+              <p className="text-muted mb-0">
+                Start adding meals to track your nutrition.
+              </p>
+            </div>
           </div>
         ) : (
-          meals
-            .filter((item) =>
-              item.foodName
-                .toLowerCase()
-                .includes(search.toLowerCase())
-            )
-            .filter((item) => {
-              if (!date) return true;
-              return (
-                new Date(item.date).toISOString().slice(0, 10) === date
-              );
-            })
-            .map((item) => (
-              <div className="card shadow mb-3" key={item._id}>
-                <div className="card-body">
+          <div className="row">
+            {meals
+              .filter((item) =>
+                item.foodName
+                  .toLowerCase()
+                  .includes(search.toLowerCase())
+              )
+              .filter((item) => {
+                if (!date) return true;
 
-                  <h4 className="mb-3">
-                    {item.foodName}
-                  </h4>
+                return (
+                  new Date(item.date).toISOString().slice(0, 10) === date
+                );
+              })
+              .map((item) => (
+                <div
+                  className="col-12 col-md-6 col-lg-4 mb-4"
+                  key={item._id}
+                >
+                  <div className="card shadow-sm border-0 h-100">
+                    <div className="card-body d-flex flex-column">
 
-                  <p><strong>Meal Type:</strong> {item.mealType}</p>
-                  <p><strong>Calories:</strong> {item.calories}</p>
-                  <p><strong>Protein:</strong> {item.protein} g</p>
-                  <p><strong>Carbohydrates:</strong> {item.carbohydrates} g</p>
-                  <p><strong>Fat:</strong> {item.fat} g</p>
+                      <h4 className="mb-3">
+                        {item.foodName}
+                      </h4>
 
-                  <div className="d-flex flex-column flex-sm-row gap-2 mt-3">
+                      <p>
+                        <strong>Meal Type:</strong>{" "}
+                        {item.mealType}
+                      </p>
 
-                    <button
-                      className="btn btn-warning flex-fill"
-                      onClick={() => editMeal(item)}
-                    >
-                      Edit
-                    </button>
+                      <p>
+                        <strong>Calories:</strong>{" "}
+                        {item.calories} kcal
+                      </p>
 
-                    <button
-                      className="btn btn-danger flex-fill"
-                      onClick={() => deleteMeal(item._id)}
-                    >
-                      Delete
-                    </button>
+                      <p>
+                        <strong>Protein:</strong>{" "}
+                        {item.protein} g
+                      </p>
 
+                      <p>
+                        <strong>Carbohydrates:</strong>{" "}
+                        {item.carbohydrates} g
+                      </p>
+
+                      <p>
+                        <strong>Fat:</strong>{" "}
+                        {item.fat} g
+                      </p>
+
+                      <div className="d-flex gap-2 mt-auto pt-3">
+
+                        <button
+                          className="btn btn-warning flex-fill"
+                          onClick={() => editMeal(item)}
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          className="btn btn-danger flex-fill"
+                          onClick={() => deleteMeal(item._id)}
+                        >
+                          Delete
+                        </button>
+
+                      </div>
+
+                    </div>
                   </div>
-
                 </div>
-              </div>
-            ))
+              ))}
+          </div>
         )}
 
       </div>
